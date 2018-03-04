@@ -16,17 +16,17 @@ Then generate your new project:
 yo bfee-revealjs
 ```
 
-## Getting To Know Yeoman
+## What this generator is for
 
- * Yeoman has a heart of gold.
- * Yeoman is a person with feelings and opinions, but is very easy to work with.
- * Yeoman can be too opinionated at times but is easily convinced not to be.
- * Feel free to [learn more about Yeoman](http://yeoman.io/).
+This generator creates a base repository in order to create a [Reveal.js](https://revealjs.com) presentation.
+
+It is set up in order to make using GitHub pages very easy but also can be run locally using the excellent [Caddy](https://caddyserver.com) as a local web server.  Simply execute the appropraite serve-* script for your given operating system.  Windows, Mac, and Linux are all supported.
+
+Once you execute the given script, open a browser and point it to [http://localhost:8080](http://localhost:8080) and the presentation should be displayed.
 
 ## License
 
 Apache-2.0 © [Brennan Fee]()
-
 
 [npm-image]: https://badge.fury.io/js/generator-bfee-revealjs.svg
 [npm-url]: https://npmjs.org/package/generator-bfee-revealjs

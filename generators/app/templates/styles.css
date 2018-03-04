@@ -1,0 +1,21 @@
+/* Some shared styles */
+.reveal .footer {
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    font-size: 0.7em;
+    display: none;
+}
+
+.reveal section .sectionTitle {
+    position: absolute;
+    top: -3em;
+    left: -3em;
+    font-size: 0.75em;
+}
+
+.reveal section img {
+    background-color: white;
+}
+
+/* Your custom styles below */

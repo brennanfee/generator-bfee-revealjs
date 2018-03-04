@@ -74,14 +74,6 @@ Temporary Items
 
 # End of https://www.gitignore.io/api/macos
 
-# Created by https://www.gitignore.io/api/vagrant
-
-### Vagrant ###
-.vagrant/
-*.box
-
-# End of https://www.gitignore.io/api/vagrant
-
 # Created by https://www.gitignore.io/api/vim
 
 ### Vim ###
@@ -109,29 +101,6 @@ tags
 .history
 
 # End of https://www.gitignore.io/api/visualstudiocode
-
-# Created by https://www.gitignore.io/api/ansible
-
-### Ansible ###
-# Ansible retry files
-*.retry
-
-# End of https://www.gitignore.io/api/ansible
-
-# Created by https://www.gitignore.io/api/packer
-
-### Packer ###
-# Cache objects
-packer_cache/
-output-*/
-
-# For built boxes
-*.box
-
-# For build artifacts
-*.vdi
-
-# End of https://www.gitignore.io/api/packer
 
 ###### Custom ######
 node_modules
