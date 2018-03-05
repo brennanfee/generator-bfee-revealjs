@@ -3,13 +3,6 @@ const Generator = require('yeoman-generator');
 const path = require('path');
 const _ = require('lodash');
 const extend = _.merge;
-const mkdirp = require('mkdirp');
-
-function makePresentationName(name) {
-    name = _.kebabCase(name);
-    name = name.indexOf('presentation-') === 0 ? name : 'presentation-' + name;
-    return name;
-}
 
 module.exports = class extends Generator {
     constructor(args, options) {
@@ -31,8 +24,8 @@ module.exports = class extends Generator {
         const prompts = [
             {
                 name: 'name',
-                message: 'Your project name (folder and/or repo)',
-                default: makePresentationName(path.basename(process.cwd())),
+                message: 'Your project name (folder and/or repo):',
+                default: _.kebabCase(path.basename(process.cwd())),
                 filter: _.kebabCase,
                 validate(str) {
                     return str.length > 0;
@@ -40,8 +33,8 @@ module.exports = class extends Generator {
             },
             {
                 name: 'title',
-                message: 'Your presentation title',
-                default: 'Super interesting prentation that will blow you away!'
+                message: 'Your presentation title:',
+                default: 'Presentation Title'
             }
         ];
 
@@ -50,22 +43,10 @@ module.exports = class extends Generator {
         });
     }
 
-    default() {
-        this.composeWith(require.resolve('generator-bfee-blankrepo/generators/app'), {
-            name: this.props.name
-        });
-    }
-
     writing() {
-        const pkg = this.fs.readJSON(
-            this.destinationPath(this.options.generateInto, 'package.json'),
-            {}
-        );
-
         // Copy the verbatum files
         const files = [
             'Caddyfile',
-            'index.html',
             'serve-freebsd.sh',
             'serve-linux.sh',
             'serve-mac.sh',
@@ -90,8 +71,24 @@ module.exports = class extends Generator {
         ];
 
         for (let file of files) {
-            this.fs.copy(this.templatePath(file), this.destinationPath(file));
+            this.fs.copy(
+                this.templatePath(file),
+                this.destinationPath(this.options.generateInto, file)
+            );
         }
+
+        // index.html is templated
+        this.fs.copyTpl(
+            this.templatePath('index.html'),
+            this.destinationPath(this.options.generateInto, 'index.html'),
+            {
+                projectName: this.props.name,
+                safeProjectName: _.camelCase(this.props.name),
+                presentationTitle: this.props.title,
+                description: this.config.get('description')
+                //authorName: pkg.author.name,
+            }
+        );
 
         // Readme is templated
         this.fs.copyTpl(
@@ -101,13 +98,39 @@ module.exports = class extends Generator {
                 projectName: this.props.name,
                 safeProjectName: _.camelCase(this.props.name),
                 presentationTitle: this.props.title,
-                description: this.props.description,
-                license: pkg.license
+                description: this.config.get('description')
             }
         );
+
+        this.fs.append(
+            this.destinationPath(this.options.generateInto, '.gitattributes'),
+            '\ncaddy binary\n*.exe binary\n'
+        );
+
+        // Debugging
+        this.fs.writeJSON(
+            this.destinationPath(this.options.generateInto, 'props.json'),
+            this.props
+        );
+
+        this.fs.writeJSON(
+            this.destinationPath(this.options.generateInto, 'options.json'),
+            this.options
+        );
+    }
+
+    default() {
+        this.composeWith(require.resolve('generator-bfee-blankrepo/generators/app'), {
+            name: this.props.name,
+            includeReadme: false
+        });
     }
 
     install() {
         //this.installDependencies({ bower: false });
+    }
+
+    end() {
+        //this.fs.delete(this.destinationPath(this.options.generateInto, '.yo-rc.json'));
     }
 };
