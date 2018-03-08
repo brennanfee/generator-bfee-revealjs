@@ -1,6 +1,6 @@
 {
     "name": "generator-bfee-revealjs",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Yoeman generator for revealjs presentations.",
     "homepage": "https://github.com/brennanfee/generator-bfee-revealjs",
     "author": {
