@@ -2,6 +2,10 @@
 
 Welcome to the "<%- presentationTitle %>" presentation.
 
-<%- projectName %>
-<%- safeProjectName %>
+## Description
+
 <%- description %>
+
+## License
+
+<%= license %> © <%= copyrightYear %> [<%= authorName %>](<%= authorUrl %>)
