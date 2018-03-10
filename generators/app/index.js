@@ -1,7 +1,6 @@
 'use strict';
 const Generator = require('yeoman-generator');
 const _ = require('lodash');
-const extend = _.merge;
 const parseAuthor = require('parse-author');
 const gitConfig = require('git-config');
 const githubUsername = require('github-username');
@@ -22,6 +21,14 @@ const licenses = [
 ];
 
 module.exports = class extends Generator {
+    _appendPeriodIfNeeded(str) {
+        if (str && !_.endsWith(str, '.')) {
+            return str + '.';
+        } else {
+            return str;
+        }
+    }
+
     initializing() {
         this.gitConfig = gitConfig.sync();
         this.gitConfig.user = this.gitConfig.user || {};
@@ -31,10 +38,10 @@ module.exports = class extends Generator {
 
         // Read the values from the package.json if they already have one
         this.props = {
-            name: _.kebabCase(pkg.name),
-            description: pkg.description,
+            projectName: _.kebabCase(pkg.name),
+            projectDescription: this._appendPeriodIfNeeded(pkg.description),
             version: pkg.version,
-            homepage: pkg.homepage,
+            projectHomepage: pkg.homepage,
             license: pkg.license
         };
 
@@ -55,8 +62,29 @@ module.exports = class extends Generator {
     _askFor() {
         const prompts = [
             {
-                name: 'name',
+                name: 'projectName',
                 message: 'Your project name (repo name or folder name):',
+                default: _.kebabCase(path.basename(process.cwd())),
+                when: !this.props.projectName,
+                filter: _.kebabCase,
+                validate(str) {
+                    return str.length > 0;
+                }
+            },
+            {
+                name: 'projectDescription',
+                message: 'Project description:',
+                when: !this.props.projectDescription,
+                filter: this._appendPeriodIfNeeded
+            },
+            {
+                name: 'projectHomepage',
+                message: 'Project homepage url:',
+                when: !this.props.projectHomepage
+            },
+            {
+                name: 'name',
+                message: 'Your presentation name (folder name for first presentation):',
                 default: _.kebabCase(path.basename(process.cwd())),
                 when: !this.props.name,
                 filter: _.kebabCase,
@@ -67,18 +95,16 @@ module.exports = class extends Generator {
             {
                 name: 'title',
                 message: 'Your presentation title:',
-                default: 'Presentation Title',
-                when: !this.props.title
+                when: !this.props.title,
+                validate(str) {
+                    return str.length > 0;
+                }
             },
             {
                 name: 'description',
                 message: 'Project description:',
-                when: !this.props.description
-            },
-            {
-                name: 'homepage',
-                message: 'Project homepage url:',
-                when: !this.props.homepage
+                when: !this.props.description,
+                filter: this._appendPeriodIfNeeded
             },
             {
                 name: 'authorName',
@@ -103,7 +129,7 @@ module.exports = class extends Generator {
         ];
 
         return this.prompt(prompts).then(props => {
-            this.props = extend(this.props, props);
+            this.props = _.merge(this.props, props);
         });
     }
 
@@ -136,7 +162,7 @@ module.exports = class extends Generator {
         ];
 
         return this.prompt(prompts).then(props => {
-            this.props = extend(this.props, props);
+            this.props = _.merge(this.props, props);
         });
     }
 
@@ -149,12 +175,12 @@ module.exports = class extends Generator {
     _writePackageJson() {
         const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
 
-        let pkg = extend(
+        let pkg = _.merge(
             {
                 name: this.props.name,
-                version: this.props.version || '0.0.0',
-                description: this.props.description,
-                homepage: this.props.homepage,
+                version: this.props.version || '0.1.0',
+                description: this.props.projectDescription,
+                homepage: this.props.projectHomepage,
                 author: {
                     name: this.props.authorName,
                     email: this.props.authorEmail,
@@ -174,17 +200,17 @@ module.exports = class extends Generator {
         const pkg = this.fs.readJSON(this.destinationPath('package.json'), {});
 
         // License file
-        const filename = this.props.license + '.txt';
+        const filename = `${this.props.license}.txt`;
         let author = this.props.authorName.trim();
         if (this.props.authorEmail) {
-            author += ' <' + this.props.authorEmail.trim() + '>';
+            author += ` <${this.props.authorEmail.trim()}>`;
         }
         if (this.props.authorUrl) {
-            author += ' (' + this.props.authorUrl.trim() + ')';
+            author += ` (${this.props.authorUrl.trim()})`;
         }
 
         this.fs.copyTpl(
-            this.templatePath('licenses/' + filename),
+            this.templatePath(`licenses/${filename}`),
             this.destinationPath('LICENSE'),
             {
                 year: this.props.copyrightYear,
@@ -215,29 +241,63 @@ module.exports = class extends Generator {
             this.templatePath('index.html'),
             this.destinationPath('index.html'),
             {
-                projectName: this.props.name,
-                safeProjectName: _.camelCase(this.props.name),
+                projectName: this.props.projectName,
+                safeProjectName: _.camelCase(this.props.projectName),
+                projectDescription: this.props.projectDescription,
+                presentationName: this.props.name,
+                safePresentationName: _.camelCase(this.props.name),
                 presentationTitle: this.props.title,
                 description: this.props.description,
                 authorName: this.props.authorName,
+                authorEmail: this.props.authorEmail,
+                authorUrl: this.props.authorUrl,
                 license: this.props.license
             }
         );
 
         // Readme
+        let authorLink = '';
+        if (this.props.authorName) {
+            if (this.props.authorUrl) {
+                authorLink = `[${this.props.authorName}](${this.props.authorUrl})`;
+            } else {
+                authorLink = this.props.authorName;
+            }
+        }
+
         this.fs.copyTpl(
             this.templatePath('README.md'),
             this.destinationPath('README.md'),
             {
-                projectName: this.props.name,
-                safeProjectName: _.camelCase(this.props.name),
-                presentationTitle: this.props.title,
-                description: this.props.description,
+                projectName: this.props.projectName,
+                safeProjectName: _.camelCase(this.props.projectName),
+                projectDescription: this.props.projectDescription,
+                projectHomepage: this.props.projectHomepage,
+                authorLink: authorLink,
                 license: this.props.license,
-                copyrightYear: this.props.copyrightYear,
+                copyrightYear: this.props.copyrightYear
+            }
+        );
+    }
+
+    _writePresentationsTemplates() {
+        this.fs.copy(
+            this.templatePath('../../add/templates/styles.css'),
+            this.destinationPath('presentations/styles.css')
+        );
+
+        this.fs.copyTpl(
+            this.templatePath('../../add/templates/index.html'),
+            this.destinationPath('presentations/template.html'),
+            {
+                folderName: '',
+                safeFolderName: '',
+                title: 'Title',
+                description: '',
                 authorName: this.props.authorName,
-                authorEmail: this.props.authorEmail,
-                authorUrl: this.props.authorUrl
+                authorEmail: this.props.authorEmail || '',
+                authorUrl: this.props.authorUrl || '',
+                license: this.props.license || ''
             }
         );
     }
@@ -247,12 +307,23 @@ module.exports = class extends Generator {
         this._writeLicenseFile();
         this._writeRootFiles();
         this._writeTemplates();
+        this._writePresentationsTemplates();
     }
 
     default() {
         this.composeWith(require.resolve('../git'), {
             name: this.props.name,
             githubAccount: this.props.githubAccount
+        });
+
+        this.composeWith(require.resolve('../add'), {
+            folderName: this.props.name,
+            title: this.props.title,
+            description: this.props.description,
+            authorName: this.props.authorName,
+            authorEmail: this.props.authorEmail,
+            authorUrl: this.props.authorUrl,
+            license: this.props.license
         });
     }
 

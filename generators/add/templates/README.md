@@ -1,10 +1,10 @@
 # Presentation
 
-Welcome to the "<%- projectName %>" presentations.
-<% if (projectDescription) { %>
+Welcome to the "<%= title %>" presentation.
+<% if (description) { %>
 ## Description
 
-<%= projectDescription %><% } %>
+<%= description %><% } %>
 <% if (license) { %>
 ## License
 
