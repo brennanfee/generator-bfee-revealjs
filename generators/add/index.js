@@ -97,7 +97,6 @@ module.exports = class extends Generator {
             {
                 name: 'title',
                 message: 'Your presentation title:',
-                default: 'Presentation Title',
                 when: !this.props.title,
                 validate(str) {
                     return str.length > 0;

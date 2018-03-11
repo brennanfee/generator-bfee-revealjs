@@ -16,20 +16,32 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/blood.min.css" id="theme">
+
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <h1>Presentation Index - <%- projectName %></h1>
+    <div class="reveal">
 
-    <h3>Select a presentation below:</h3>
-    <ul id="presentation-list">
-        <li>
-            <a href="/presentations/<%- presentationName %>/index.html"><%- presentationTitle %></a>
-            <p><%- description %></p>
-        </li>
-    </ul>
+        <h2>Presentation Index - <%- projectName %></h2>
 
-    <footer><a id="page-url" href="#">URL</a></footer>
+        <h3>Select a presentation below:</h3>
+        <ul id="presentation-list">
+            <li>
+                <a href="/presentations/<%- presentationName %>/index.html">
+                    <%- presentationTitle %>
+                </a>
+                <p>
+                    <%- description %>
+                </p>
+            </li>
+        </ul>
+
+        <footer>
+            Link: <a id="page-url" href="#">URL</a>
+        </footer>
+
+    </div>
 </body>
 
 <script>
