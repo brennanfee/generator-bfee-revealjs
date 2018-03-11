@@ -1,17 +1,17 @@
 /* Some shared styles */
-.reveal .footer {
+.reveal footer {
     position: absolute;
-    bottom: 1em;
-    left: 1em;
-    font-size: 0.7em;
+    bottom: 2rem;
+    left: 2rem;
+    font-size: 1.3rem;
     display: none;
 }
 
-.reveal section .sectionTitle {
+.reveal section p.sectionTitle {
     position: absolute;
-    top: -3em;
-    left: -3em;
-    font-size: 0.75em;
+    top: -15rem;
+    left: -5rem;
+    font-size: 1.5rem;
 }
 
 .reveal section img {

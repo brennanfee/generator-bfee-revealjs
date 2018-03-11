@@ -45,9 +45,10 @@
 </body>
 
 <script>
-    let elm = document.getElementById('page-url');
-    elm.href = document.URL;
-    elm.innerText = document.URL;
+    let elm = document.getElementById("page-url");
+    let url = document.location.origin + document.location.pathname;
+    elm.href = url;
+    elm.innerText = url;
 </script>
 
 </html>

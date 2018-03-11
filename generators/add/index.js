@@ -130,6 +130,10 @@ module.exports = class extends Generator {
         );
 
         this.fs.copy(this.templatePath('styles.css'), `${destinationRoot}/styles.css`);
+        this.fs.copy(
+            this.templatePath('custom-js.js'),
+            `${destinationRoot}/custom-js.js`
+        );
 
         // index.html
         this.fs.copyTpl(

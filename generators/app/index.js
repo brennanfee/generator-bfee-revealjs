@@ -85,7 +85,6 @@ module.exports = class extends Generator {
             {
                 name: 'name',
                 message: 'Your presentation name (folder name for first presentation):',
-                default: _.kebabCase(path.basename(process.cwd())),
                 when: !this.props.name,
                 filter: _.kebabCase,
                 validate(str) {
@@ -284,6 +283,11 @@ module.exports = class extends Generator {
         this.fs.copy(
             this.templatePath('../../add/templates/styles.css'),
             this.destinationPath('presentations/styles.css')
+        );
+
+        this.fs.copy(
+            this.templatePath('../../add/templates/custom-js.js'),
+            this.destinationPath('presentations/custom-js.js')
         );
 
         this.fs.copyTpl(
