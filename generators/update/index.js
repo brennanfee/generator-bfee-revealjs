@@ -5,7 +5,7 @@ var dir = require('node-dir');
 var path = require('path');
 
 module.exports = class extends Generator {
-    writing() {
+    end() {
         let indexFile = this.destinationPath('index.html');
 
         this.fs.copy(indexFile, indexFile, {
