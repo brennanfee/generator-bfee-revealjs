@@ -1,3 +1,6 @@
 http://localhost:8080, https://localhost:8081
 gzip
 tls self_signed
+markdown {
+    template /markdown.html
+}
