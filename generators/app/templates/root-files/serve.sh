@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-local uname=$(uname | tr '[:upper:]' '[:lower:]')
+uname=$(uname -s | tr '[:upper:]' '[:lower:]')
 if [[ $uname == "darwin" ]]; then
     ./caddy/mac/caddy -conf ./Caddyfile
 elif [[ $uname == "linux" ]]; then
@@ -10,5 +10,7 @@ elif [[ $uname == "freebsd" ]]; then
 elif [[ $uname == "openbsd" ]]; then
     ./caddy/openbsd/caddy -conf ./Caddyfile
 else
-    echo -e "${red}Unable to determine operating system!${normal}"
+    echo -e "\033[31mUnable to determine operating system!\033[0;0;0m"
 fi
+
+unset uname

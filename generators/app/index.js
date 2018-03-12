@@ -186,8 +186,24 @@ module.exports = class extends Generator {
                     url: this.props.authorUrl
                 },
                 keywords: [],
-                devDependencies: {},
-                dependencies: {}
+                devDependencies: {
+                    'cross-os': '^1.2.2'
+                },
+                dependencies: {},
+                scripts: {
+                    add: 'yo bfee-revealjs:add',
+                    start: 'cross-os serve',
+                    serve: 'cross-os serve'
+                },
+                'cross-os': {
+                    serve: {
+                        freebsd: './serve.sh',
+                        openbsd: './serve.sh',
+                        darwin: './serve.sh',
+                        linux: './serve.sh',
+                        win32: 'serve-windows.cmd'
+                    }
+                }
             },
             currentPkg
         );
@@ -282,17 +298,17 @@ module.exports = class extends Generator {
     _writePresentationsTemplates() {
         this.fs.copy(
             this.templatePath('../../add/templates/styles.css'),
-            this.destinationPath('presentations/styles.css')
+            this.destinationPath('template/styles.css')
         );
 
         this.fs.copy(
             this.templatePath('../../add/templates/custom-js.js'),
-            this.destinationPath('presentations/custom-js.js')
+            this.destinationPath('template/custom-js.js')
         );
 
         this.fs.copyTpl(
             this.templatePath('../../add/templates/index.html'),
-            this.destinationPath('presentations/template.html'),
+            this.destinationPath('template/template.html'),
             {
                 folderName: '',
                 safeFolderName: '',
@@ -316,7 +332,7 @@ module.exports = class extends Generator {
 
     default() {
         this.composeWith(require.resolve('../git'), {
-            name: this.props.name,
+            name: this.props.projectName,
             githubAccount: this.props.githubAccount
         });
 
@@ -333,5 +349,6 @@ module.exports = class extends Generator {
 
     end() {
         this.fs.delete(this.destinationPath('.yo-rc.json'));
+        this.installDependencies({ bower: false });
     }
 };
