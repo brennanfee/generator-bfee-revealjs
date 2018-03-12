@@ -175,4 +175,8 @@ module.exports = class extends Generator {
     writing() {
         this._writeNewPresentation();
     }
+
+    default() {
+        this.composeWith(require.resolve('../update'), {});
+    }
 };
