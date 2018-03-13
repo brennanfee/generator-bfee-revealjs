@@ -191,8 +191,9 @@ module.exports = class extends Generator {
                 },
                 dependencies: {},
                 scripts: {
-                    add: 'yo bfee-revealjs:add',
+                    add: 'yo bfee-revealjs:add --force',
                     update: 'yo bfee-revealjs:update --force',
+                    delete: 'yo bfee-revealjs:delete --force',
                     start: 'cross-os serve',
                     serve: 'cross-os serve'
                 },

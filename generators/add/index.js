@@ -177,6 +177,7 @@ module.exports = class extends Generator {
     }
 
     default() {
+        // update the root index.html file
         this.composeWith(require.resolve('../update'), {});
     }
 };
