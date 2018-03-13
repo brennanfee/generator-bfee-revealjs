@@ -203,7 +203,7 @@ module.exports = class extends Generator {
                         openbsd: './serve.sh',
                         darwin: './serve.sh',
                         linux: './serve.sh',
-                        win32: 'serve-windows.cmd'
+                        win32: 'PowerShell.exe -NoProfile -File serve-windows.ps1'
                     }
                 }
             },
