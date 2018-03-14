@@ -337,21 +337,6 @@ module.exports = class extends Generator {
                 revealVersion: revealVersion
             }
         );
-
-        this.fs.copyTpl(
-            this.templatePath('../../add/templates/slides.md'),
-            this.destinationPath('template/slides.md'),
-            {
-                folderName: '',
-                safeFolderName: '',
-                title: 'Title',
-                description: '',
-                authorName: this.props.authorName,
-                authorEmail: this.props.authorEmail || '',
-                authorUrl: this.props.authorUrl || '',
-                license: this.props.license || ''
-            }
-        );
     }
 
     writing() {

@@ -177,18 +177,6 @@ module.exports = class extends Generator {
             }
         );
 
-        // slides.md
-        this.fs.copyTpl(this.templatePath('slides.md'), `${destinationRoot}/slides.md`, {
-            folderName: this.props.folderName,
-            safeFolderName: _.camelCase(this.props.folderName),
-            title: this.props.title,
-            description: this.props.description,
-            authorName: this.props.authorName,
-            authorEmail: this.props.authorEmail || '',
-            authorUrl: this.props.authorUrl || '',
-            license: this.props.license || ''
-        });
-
         // Readme
         let authorLink = '';
         if (this.props.authorName) {
