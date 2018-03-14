@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
         pdfMaxPagesPerSlide: 1,
 
         math: {
-            config: 'TeX-MML-AM_HTMLorMML-full' // See http://docs.mathjax.org/en/latest/config-files.html
+            mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js',
+            config: 'TeX-MML-AM_HTMLorMML' // See http://docs.mathjax.org/en/latest/config-files.html
         },
 
         transition: 'slide', // none/fade/slide/convex/concave/zoom
@@ -20,28 +21,28 @@ document.addEventListener('DOMContentLoaded', function(event) {
         dependencies: [
             {
                 src:
-                    'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/lib/js/classList.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/<%= revealVersion %>/lib/js/classList.js',
                 condition: function() {
                     return !document.body.classList;
                 }
             },
             {
                 src:
-                    'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/markdown/marked.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/<%= revealVersion %>/plugin/markdown/marked.js',
                 condition: function() {
                     return !!document.querySelector('[data-markdown]');
                 }
             },
             {
                 src:
-                    'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/markdown/markdown.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/<%= revealVersion %>/plugin/markdown/markdown.min.js',
                 condition: function() {
                     return !!document.querySelector('[data-markdown]');
                 }
             },
             {
                 src:
-                    'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/math/math.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/<%= revealVersion %>/plugin/math/math.min.js',
                 async: true
             },
             {
@@ -54,15 +55,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
             },
             {
                 src:
-                    'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/zoom-js/zoom.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/<%= revealVersion %>/plugin/zoom-js/zoom.min.js',
                 async: true
             },
-            {
-                src:
-                    'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/print-pdf/print-pdf.min.js',
-                async: true
-            },
-            { src: '/plugins/notes/notes.js', async: true }
+            { src: '/plugin/notes/notes.js', async: true }
         ]
     });
 

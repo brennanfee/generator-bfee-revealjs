@@ -3,6 +3,8 @@ const Generator = require('yeoman-generator');
 const _ = require('lodash');
 const parseAuthor = require('parse-author');
 
+const revealVersion = '3.6.0';
+
 module.exports = class extends Generator {
     constructor(args, options) {
         super(args, options);
@@ -47,6 +49,19 @@ module.exports = class extends Generator {
             type: String,
             required: false,
             desc: 'license'
+        });
+
+        this.option('revealTheme', {
+            type: String,
+            required: false,
+            desc: 'The reveal theme to use for your presentation.'
+        });
+
+        this.option('skipUpdate', {
+            type: Boolean,
+            required: false,
+            default: false,
+            desc: 'Skip the update of the root index.html'
         });
     }
 
@@ -104,9 +119,15 @@ module.exports = class extends Generator {
             },
             {
                 name: 'description',
-                message: 'Project description:',
+                message: 'Presentation description:',
                 when: !this.props.description,
                 filter: this._appendPeriodIfNeeded
+            },
+            {
+                name: 'revealTheme',
+                message: 'Reveal theme:',
+                default: 'blood',
+                when: !this.props.revealTheme
             },
             {
                 name: 'authorName',
@@ -130,9 +151,12 @@ module.exports = class extends Generator {
         );
 
         this.fs.copy(this.templatePath('styles.css'), `${destinationRoot}/styles.css`);
-        this.fs.copy(
+        this.fs.copyTpl(
             this.templatePath('custom-js.js'),
-            `${destinationRoot}/custom-js.js`
+            `${destinationRoot}/custom-js.js`,
+            {
+                revealVersion: revealVersion
+            }
         );
 
         // index.html
@@ -147,9 +171,23 @@ module.exports = class extends Generator {
                 authorName: this.props.authorName,
                 authorEmail: this.props.authorEmail || '',
                 authorUrl: this.props.authorUrl || '',
-                license: this.props.license || ''
+                license: this.props.license || '',
+                revealTheme: this.props.revealTheme,
+                revealVersion: revealVersion
             }
         );
+
+        // slides.md
+        this.fs.copyTpl(this.templatePath('slides.md'), `${destinationRoot}/slides.md`, {
+            folderName: this.props.folderName,
+            safeFolderName: _.camelCase(this.props.folderName),
+            title: this.props.title,
+            description: this.props.description,
+            authorName: this.props.authorName,
+            authorEmail: this.props.authorEmail || '',
+            authorUrl: this.props.authorUrl || '',
+            license: this.props.license || ''
+        });
 
         // Readme
         let authorLink = '';
@@ -177,7 +215,9 @@ module.exports = class extends Generator {
     }
 
     default() {
-        // update the root index.html file
-        this.composeWith(require.resolve('../update'), {});
+        if (!this.options.skipUpdate) {
+            // update the root index.html file
+            this.composeWith(require.resolve('../update'), {});
+        }
     }
 };

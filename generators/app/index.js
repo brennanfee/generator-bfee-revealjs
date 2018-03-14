@@ -6,6 +6,8 @@ const gitConfig = require('git-config');
 const githubUsername = require('github-username');
 const path = require('path');
 
+const revealVersion = '3.6.0';
+
 const licenses = [
     { name: 'Apache 2.0', value: 'Apache-2.0' },
     { name: 'MIT', value: 'MIT' },
@@ -101,9 +103,15 @@ module.exports = class extends Generator {
             },
             {
                 name: 'description',
-                message: 'Project description:',
+                message: 'Presentation description:',
                 when: !this.props.description,
                 filter: this._appendPeriodIfNeeded
+            },
+            {
+                name: 'revealTheme',
+                message: 'Reveal theme:',
+                default: 'blood',
+                when: !this.props.revealTheme
             },
             {
                 name: 'authorName',
@@ -268,7 +276,9 @@ module.exports = class extends Generator {
                 authorName: this.props.authorName,
                 authorEmail: this.props.authorEmail,
                 authorUrl: this.props.authorUrl,
-                license: this.props.license
+                license: this.props.license,
+                revealTheme: this.props.revealTheme,
+                revealVersion: revealVersion
             }
         );
 
@@ -303,14 +313,34 @@ module.exports = class extends Generator {
             this.destinationPath('template/styles.css')
         );
 
-        this.fs.copy(
+        this.fs.copyTpl(
             this.templatePath('../../add/templates/custom-js.js'),
-            this.destinationPath('template/custom-js.js')
+            this.destinationPath('template/custom-js.js'),
+            {
+                revealVersion: revealVersion
+            }
         );
 
         this.fs.copyTpl(
             this.templatePath('../../add/templates/index.html'),
             this.destinationPath('template/template.html'),
+            {
+                folderName: '',
+                safeFolderName: '',
+                title: 'Title',
+                description: '',
+                authorName: this.props.authorName,
+                authorEmail: this.props.authorEmail || '',
+                authorUrl: this.props.authorUrl || '',
+                license: this.props.license || '',
+                revealTheme: this.props.revealTheme,
+                revealVersion: revealVersion
+            }
+        );
+
+        this.fs.copyTpl(
+            this.templatePath('../../add/templates/slides.md'),
+            this.destinationPath('template/slides.md'),
             {
                 folderName: '',
                 safeFolderName: '',
@@ -345,7 +375,9 @@ module.exports = class extends Generator {
             authorName: this.props.authorName,
             authorEmail: this.props.authorEmail,
             authorUrl: this.props.authorUrl,
-            license: this.props.license
+            license: this.props.license,
+            revealTheme: this.props.revealTheme,
+            skipUpdate: true
         });
     }
 

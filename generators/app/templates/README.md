@@ -1,6 +1,6 @@
 # Presentation
 
-Welcome to the "<%- projectName %>" presentations.
+Welcome to the "<%= projectName %>" presentations.
 <% if (projectDescription) { %>
 ## Description
 

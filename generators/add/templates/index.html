@@ -14,18 +14,18 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/blood.min.css" id="theme">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/<%= revealVersion %>/css/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/<%= revealVersion %>/css/theme/<%= revealTheme %>.min.css" id="theme">
 
     <!-- Theme used for syntax highlighting of code -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darkula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css">
 
     <!-- Printing and PDF exports -->
     <script>
         var link = document.createElement( 'link' );
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = window.location.search.match( /print-pdf/gi ) ? 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/css/print/pdf.min.css' : 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/print/paper.min.css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/<%= revealVersion %>/css/print/pdf.min.css' : 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/<%= revealVersion %>/css/print/paper.min.css';
         document.getElementsByTagName( 'head' )[0].appendChild( link );
     </script>
 
@@ -34,13 +34,23 @@
 
 <body>
     <div class="reveal">
+<!--
+        <div class="slides">
+            <section data-markdown="slides.md"
+                data-separator="^\r?\n---\r?\n$"
+                data-separator-verticle="^\r?\n***\r?\n$"
+                data-separator-notes="^[Nn]ote:"
+                data-charset="utf-8">
+            </section>
+        </div>
+-->
 
         <div class="slides">
             <section>
                 <h2><%= title %></h2>
             </section>
             <section>
-                <h2>Q & A</h2>
+                <h2>Q &amp; A</h2>
             </section>
         </div>
 
@@ -54,8 +64,8 @@
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/lib/js/head.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/<%= revealVersion %>/lib/js/head.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/<%= revealVersion %>/js/reveal.min.js"></script>
 <script src="custom-js.js"></script>
 
 </html>
