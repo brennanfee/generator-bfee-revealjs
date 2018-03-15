@@ -31,7 +31,7 @@ describe('generator-bfee-revealjs:app', () => {
             'package.json',
             'README.md',
             'serve.sh',
-            'serve-windows.cmd',
+            'serve-windows.ps1',
             'styles.css'
         ]);
     });
